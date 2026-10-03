@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 namespace MvcMovie
 {
     public class Program
@@ -5,6 +6,9 @@ namespace MvcMovie
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.");
+
+            builder.Services.AddDbContext<MvcMovieContext>(options => options.UseSqlServer(connectionString));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
